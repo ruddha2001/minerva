@@ -8,7 +8,7 @@ export const authGuard = async (
   next: NextFunction
 ) => {
   try {
-    let token = req.get("x-api-token")!;
+    let token = req.get("x-auth-token")!;
     let payload: any = await verifyJwt(token);
     res.locals.user = await DatabaseService.getMongoDatabase()
       .collection(payload.role!)

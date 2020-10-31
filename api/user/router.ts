@@ -10,7 +10,7 @@ const userSignUpSchema = yup.object({
   email: yup.string().email().required().trim(),
   mobile: yup.string().length(10).required(),
   user_number: yup.string().required().trim(),
-  class: yup.string().required().trim(),
+  class: yup.array().required(),
   password: yup.string().required().trim(),
   role: yup
     .string()
@@ -44,7 +44,7 @@ export const userRegisterHandler = () => {
 };
 
 const userSignupHandler = (req: Request, res: Response) => {
-  userSignup(req.body.data)
+  userSignup(req.body)
     .then((success) => {
       res.json(success);
     })

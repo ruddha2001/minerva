@@ -121,7 +121,7 @@ export const userTestCases = () => {
 
     it("Delete Teacher User Test Data", async () => {
       let response = await DatabaseService.getMongoDatabase()
-        .collection("student")
+        .collection("teacher")
         .deleteOne({ name: "Dummy User" });
 
       expect(response.result.ok).to.be.equal(1);

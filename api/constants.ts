@@ -9,6 +9,7 @@ export const routeVariables = {
   ENDPOINTS: {
     HEALTHCHECK: "/status",
     USER: "/user",
+    QUESTION: "/question",
   },
 };
 

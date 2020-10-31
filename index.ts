@@ -7,6 +7,7 @@ import { DatabaseService } from "./api/shared/services/databaseService";
 import { logger, routeVariables } from "./api/constants";
 import { healthcheckRegisterHandler } from "./api/healthcheck/router";
 import { userRegisterHandler } from "./api/user/router";
+import { questionRegisterHandler } from "./api/question/router";
 
 const app = express();
 
@@ -23,7 +24,10 @@ app.use(
   `${routeVariables.API_VERSION}${routeVariables.ENDPOINTS.USER}`,
   userRegisterHandler()
 );
-
+app.use(
+  `${routeVariables.API_VERSION}${routeVariables.ENDPOINTS.QUESTION}`,
+  questionRegisterHandler()
+);
 logger.info("Connecting to MongoDB...");
 DatabaseService.getDatabaseServiceInstance()
   .initializeDatabase()
