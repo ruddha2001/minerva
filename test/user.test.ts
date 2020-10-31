@@ -29,7 +29,6 @@ export const userTestCases = () => {
   describe("User Auth Check ", function () {
     it("Valid Student User details to register", async () => {
       let response = await userSignup({
-        user_number: "1002010",
         name: "Dummy User",
         class: ["One"],
         email: "mail@example.com",
@@ -44,7 +43,6 @@ export const userTestCases = () => {
     it("Duplicate Student User details to register", async () => {
       await expectThrowsAsync(userSignup, [
         {
-          user_number: "1002010",
           name: "Dummy User",
           class: ["One"],
           email: "mail@example.com",
@@ -79,7 +77,6 @@ export const userTestCases = () => {
 
     it("Valid Teacher User details to register", async () => {
       let response = await userSignup({
-        user_number: "1002010",
         name: "Dummy User",
         class: ["One"],
         email: "mail@example.com",
@@ -94,7 +91,6 @@ export const userTestCases = () => {
     it("Duplicate Teacher User details to register", async () => {
       await expectThrowsAsync(userSignup, [
         {
-          user_number: "1002010",
           name: "Dummy User",
           class: ["One"],
           email: "mail@example.com",
