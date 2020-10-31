@@ -21,6 +21,7 @@
     "morgan": "^1.10.0",
     "nanoid": "^3.1.16",
     "path": "^0.12.7",
+    "python-shell": "^2.0.2",
     "typescript": "^4.0.5",
     "yup": "^0.29.3"
   },
@@ -38,7 +39,7 @@
     "@types/yup": "^0.29.9"
   },
   "scripts": {
-    "postinstall": "npx tsc",
+    "postinstall": "npx tsc && cp ./api/analytics/tag.py ./build/api/shared/services/tag.py",
     "start": "node ./build/index.js",
     "dev": "tsc && yarn start",
     "test": "sudo chmod a+rx ./test.sh && ./test.sh",

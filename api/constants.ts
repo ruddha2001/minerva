@@ -10,6 +10,7 @@ export const routeVariables = {
     HEALTHCHECK: "/status",
     USER: "/user",
     QUESTION: "/question",
+    ANALYTICS: "/analytic",
   },
 };
 
