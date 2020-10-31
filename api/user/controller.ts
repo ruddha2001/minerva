@@ -1,9 +1,8 @@
 import { hash, compare } from "bcrypt";
-import { sign } from "jsonwebtoken";
 import { errors, logger } from "../constants";
 import { DatabaseService } from "../shared/services/databaseService";
 import { signJwt } from "../shared/services/jwtService";
-import { User } from "../shared/types/UserType";
+import { User } from "../shared/types/CustomTypes";
 
 export const userSignup = async (data: User, role: "student" | "teacher") => {
   try {
