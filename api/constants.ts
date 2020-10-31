@@ -8,6 +8,7 @@ export const routeVariables = {
   API_VERSION: "/api/v1",
   ENDPOINTS: {
     HEALTHCHECK: "/status",
+    USER: "/user",
   },
 };
 
