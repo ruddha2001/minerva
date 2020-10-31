@@ -67,7 +67,11 @@ export const updateQuestion = async (
   }
 };
 
-export const fetchQuestion = async (user: User, classCode?: string | null) => {
+export const fetchQuestion = async (
+  user: User,
+  classCode?: string | null,
+  questionId?: string | null
+) => {
   try {
     let data: any = "";
     if (classCode) {
@@ -75,6 +79,10 @@ export const fetchQuestion = async (user: User, classCode?: string | null) => {
         .collection("question")
         .find({ class_code: classCode })
         .toArray();
+    } else if (questionId) {
+      data = await DatabaseService.getMongoDatabase()
+        .collection("question")
+        .findOne({ question_id: questionId });
     } else {
       let response = await DatabaseService.getMongoDatabase()
         .collection("teacher")

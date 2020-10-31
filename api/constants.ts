@@ -39,4 +39,8 @@ export const errors = {
     code: 500,
     message: "Could not update question",
   },
+  ANALYTIC_ERROR: {
+    code: 500,
+    message: "Cannot run analytics",
+  },
 };

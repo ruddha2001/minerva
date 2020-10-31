@@ -64,7 +64,8 @@ export const updateQuestionHandler = async (req: Request, res: Response) => {
 export const fetchQuestionHandler = async (req: Request, res: Response) => {
   fetchQuestion(
     res.locals.user,
-    req.query.class ? <string>req.query.class : null
+    req.query.class ? <string>req.query.class : null,
+    req.query.id ? <string>req.query.id : null
   )
     .then((success) => {
       res.json(success);
