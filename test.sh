@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./node_modules/mocha/bin/mocha ./build/test --exit
+./node_modules/mocha/bin/mocha ./build/ --exit
 code=$?
 
 if [ $code -ne 0 ]
