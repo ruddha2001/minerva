@@ -1,7 +1,7 @@
 require("dotenv").config();
 import chai from "chai";
 import { DatabaseService } from "../api/shared/services/databaseService";
-import { userSignup } from "../api/user/controller";
+import { userLogin, userSignup } from "../api/user/controller";
 
 const expect = chai.expect;
 
@@ -53,6 +53,20 @@ export const userTestCases = () => {
           mobile: "1548785471",
           password: "hello123",
         },
+        "student",
+      ]);
+    });
+
+    it("Valid Student User login", async () => {
+      let response = await userLogin("mail@example.com", "hello123", "student");
+
+      expect(response.success).to.be.true;
+    });
+
+    it("Wrong Student User Login", async () => {
+      await expectThrowsAsync(userLogin, [
+        "mail@example.com",
+        "hello1234",
         "student",
       ]);
     });

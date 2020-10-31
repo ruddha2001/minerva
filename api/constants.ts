@@ -24,4 +24,8 @@ export const errors = {
     code: 409,
     message: "User already exists",
   },
+  USER_LOGIN_INVALID: {
+    code: 400,
+    message: "Inavlid user credentials",
+  },
 };
