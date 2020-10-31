@@ -42,14 +42,3 @@ export type Question = {
   teacher_choice: boolean;
   timestamp: number;
 };
-
-export type Comment = {
-  comment_id: string;
-  asked_by: User;
-  body: string;
-  upvotes: number;
-  downvotes: number;
-  answered: boolean;
-  teacher_choice: boolean;
-  timestamp: number;
-};

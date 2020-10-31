@@ -29,4 +29,8 @@ export const errors = {
     code: 400,
     message: "Inavlid user credentials",
   },
+  QUESTION_ADD_ERROR: {
+    code: 500,
+    message: "Could not add question",
+  },
 };

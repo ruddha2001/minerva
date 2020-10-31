@@ -1,7 +1,9 @@
 import { nanoid } from "nanoid";
+import { errors, logger } from "../constants";
+import { DatabaseService } from "../shared/services/databaseService";
 import { Question } from "../shared/types/CustomTypes";
 
-export const addQuestion = (user: any, data: any) => {
+export const addQuestion = async (user: any, data: any) => {
   let question: Question = {
     question_id: nanoid(10),
     asked_by: user,
@@ -21,4 +23,13 @@ export const addQuestion = (user: any, data: any) => {
     tags: data.tags || [],
     teacher_choice: false,
   };
+  try {
+    await DatabaseService.getMongoDatabase()
+      .collection("question")
+      .insertOne(question);
+    return { success: true, message: "Question added successfully" };
+  } catch (error) {
+    logger.error(error);
+    throw errors.QUESTION_ADD_ERROR;
+  }
 };
