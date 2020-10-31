@@ -9,7 +9,6 @@ const userSignUpSchema = yup.object({
   name: yup.string().required().trim(),
   email: yup.string().email().required().trim(),
   mobile: yup.string().length(10).required(),
-  class: yup.array().required(),
   password: yup.string().required().trim(),
   role: yup
     .string()

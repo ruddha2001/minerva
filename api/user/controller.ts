@@ -13,6 +13,7 @@ export const userSignup = async (data: User) => {
     if (result.length !== 0) throw Error("User Exists");
     let hashedPassword = await hash(data.password, 14);
     data.password = hashedPassword;
+    data.class = [];
     await DatabaseService.getMongoDatabase()
       .collection(data.role)
       .insertOne(data);
