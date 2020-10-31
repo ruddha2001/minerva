@@ -35,6 +35,7 @@ export const userTestCases = () => {
           class: ["One"],
           email: "mail@example.com",
           mobile: "1548785471",
+          password: "hello123",
         },
         "student"
       );
@@ -50,6 +51,7 @@ export const userTestCases = () => {
           class: ["One"],
           email: "mail@example.com",
           mobile: "1548785471",
+          password: "hello123",
         },
         "student",
       ]);
