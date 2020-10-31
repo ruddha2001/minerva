@@ -1,6 +1,7 @@
 import { nanoid } from "nanoid";
 import { errors, logger } from "../constants";
 import { DatabaseService } from "../shared/services/databaseService";
+import { jsonToCsv } from "../shared/services/jsonConversionService";
 import { Question } from "../shared/types/CustomTypes";
 
 export const addQuestion = async (user: any, data: any) => {
@@ -27,6 +28,15 @@ export const addQuestion = async (user: any, data: any) => {
     await DatabaseService.getMongoDatabase()
       .collection("question")
       .insertOne(question);
+    let csvFormattedData = {
+      question_id: question.question_id,
+      class_code: question.class_code,
+      unit_number: question.details.unit_number,
+      downvotes: question.downvotes,
+      upvotes: question.upvotes,
+      answered: question.answered,
+    };
+    jsonToCsv(csvFormattedData, question.class_code);
     return { success: true, message: "Question added successfully" };
   } catch (error) {
     logger.error(error);
