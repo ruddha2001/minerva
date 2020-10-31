@@ -1,0 +1,42 @@
+{
+  "name": "minerva",
+  "version": "0.0.0",
+  "description": "HackThisFall 2020 Submission by Team Osiris",
+  "main": "./build/index.js",
+  "author": "Team Osiris",
+  "license": "MIT",
+  "dependencies": {
+    "@types/chai": "^4.2.14",
+    "axios": "^0.21.0",
+    "bcrypt": "^5.0.0",
+    "bunyan": "^1.8.14",
+    "chai": "^4.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^8.2.0",
+    "mongodb": "^3.6.2",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7",
+    "typescript": "^4.0.5",
+    "yup": "^0.29.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/bunyan": "^1.8.6",
+    "@types/cors": "^2.8.8",
+    "@types/express": "^4.17.8",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mocha": "^8.0.3",
+    "@types/mongodb": "^3.5.32",
+    "@types/morgan": "^1.9.2",
+    "@types/yup": "^0.29.9"
+  },
+  "scripts": {
+    "postinstall": "npx tsc",
+    "start": "node ./build/index.js",
+    "dev": "tsc && yarn start",
+    "test": "sudo chmod a+rx ./test.sh && ./test.sh"
+  }
+}
