@@ -16,4 +16,8 @@ export const errors = {
     code: 500,
     message: "Unable to connect to MongoDB",
   },
+  USER_SIGNUP_ERROR: {
+    code: 500,
+    message: "Unable to sign up new user",
+  },
 };
