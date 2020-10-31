@@ -26,19 +26,17 @@ export const userTestCases = () => {
     }
   };
 
-  describe("User Signup Check ", function () {
+  describe("User Auth Check ", function () {
     it("Valid Student User details to register", async () => {
-      let response = await userSignup(
-        {
-          user_number: "1002010",
-          name: "Dummy User",
-          class: ["One"],
-          email: "mail@example.com",
-          mobile: "1548785471",
-          password: "hello123",
-        },
-        "student"
-      );
+      let response = await userSignup({
+        user_number: "1002010",
+        name: "Dummy User",
+        class: ["One"],
+        email: "mail@example.com",
+        mobile: "1548785471",
+        password: "hello123",
+        role: "student",
+      });
 
       expect(response.success).to.be.true;
     });
@@ -52,8 +50,8 @@ export const userTestCases = () => {
           email: "mail@example.com",
           mobile: "1548785471",
           password: "hello123",
+          role: "student",
         },
-        "student",
       ]);
     });
 
@@ -72,6 +70,56 @@ export const userTestCases = () => {
     });
 
     it("Delete Student User Test Data", async () => {
+      let response = await DatabaseService.getMongoDatabase()
+        .collection("student")
+        .deleteOne({ name: "Dummy User" });
+
+      expect(response.result.ok).to.be.equal(1);
+    });
+
+    it("Valid Teacher User details to register", async () => {
+      let response = await userSignup({
+        user_number: "1002010",
+        name: "Dummy User",
+        class: ["One"],
+        email: "mail@example.com",
+        mobile: "1548785471",
+        password: "hello123",
+        role: "teacher",
+      });
+
+      expect(response.success).to.be.true;
+    });
+
+    it("Duplicate Teacher User details to register", async () => {
+      await expectThrowsAsync(userSignup, [
+        {
+          user_number: "1002010",
+          name: "Dummy User",
+          class: ["One"],
+          email: "mail@example.com",
+          mobile: "1548785471",
+          password: "hello123",
+          role: "teacher",
+        },
+      ]);
+    });
+
+    it("Valid Teacher User login", async () => {
+      let response = await userLogin("mail@example.com", "hello123", "teacher");
+
+      expect(response.success).to.be.true;
+    });
+
+    it("Wrong Teacher User Login", async () => {
+      await expectThrowsAsync(userLogin, [
+        "mail@example.com",
+        "hello1234",
+        "teacher",
+      ]);
+    });
+
+    it("Delete Teacher User Test Data", async () => {
       let response = await DatabaseService.getMongoDatabase()
         .collection("student")
         .deleteOne({ name: "Dummy User" });

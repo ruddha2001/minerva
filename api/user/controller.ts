@@ -4,16 +4,18 @@ import { DatabaseService } from "../shared/services/databaseService";
 import { signJwt } from "../shared/services/jwtService";
 import { User } from "../shared/types/CustomTypes";
 
-export const userSignup = async (data: User, role: "student" | "teacher") => {
+export const userSignup = async (data: User) => {
   try {
     let result = await DatabaseService.getMongoDatabase()
-      .collection(role)
+      .collection(data.role)
       .find({ $or: [{ email: data.email }, { mobile: data.mobile }] })
       .toArray();
     if (result.length !== 0) throw Error("User Exists");
     let hashedPassword = await hash(data.password, 14);
     data.password = hashedPassword;
-    await DatabaseService.getMongoDatabase().collection(role).insertOne(data);
+    await DatabaseService.getMongoDatabase()
+      .collection(data.role)
+      .insertOne(data);
     return { success: true, message: "User registered successfully" };
   } catch (error) {
     logger.error(error);

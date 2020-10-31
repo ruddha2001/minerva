@@ -44,8 +44,7 @@ export const userRegisterHandler = () => {
 };
 
 const userSignupHandler = (req: Request, res: Response) => {
-  const { role, ...data } = req.body;
-  userSignup(data, role)
+  userSignup(req.body.data)
     .then((success) => {
       res.json(success);
     })
