@@ -38,7 +38,10 @@ export const userLogin = async (
       throw Error("Wrong Credentials");
     return {
       success: true,
-      token: await signJwt({ user_number: result.user_number }),
+      token: await signJwt({
+        user_number: result.user_number,
+        role: result.role,
+      }),
     };
   } catch (error) {
     logger.error(error);

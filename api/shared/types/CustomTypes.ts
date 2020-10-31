@@ -14,10 +14,42 @@ export type Class = {
   faculty: string;
 };
 
-export type Teacher = {};
+export type Question = {
+  question_id: string;
+  asked_by: User;
+  title: string;
+  body: string;
+  class_code: string;
+  details: {
+    unit_number: string;
+    unit_name: string;
+    sub_topic: string;
+  };
+  tags: string[];
+  comments: {
+    comment_id: string;
+    asked_by: User;
+    body: string;
+    upvotes: number;
+    downvotes: number;
+    answered: boolean;
+    teacher_choice: boolean;
+    timestamp: Date;
+  }[];
+  upvotes: number;
+  downvotes: number;
+  answered: boolean;
+  teacher_choice: boolean;
+  timestamp: number;
+};
 
-export type Student = {};
-
-export type Question = {};
-
-export type Comment = {};
+export type Comment = {
+  comment_id: string;
+  asked_by: User;
+  body: string;
+  upvotes: number;
+  downvotes: number;
+  answered: boolean;
+  teacher_choice: boolean;
+  timestamp: number;
+};
