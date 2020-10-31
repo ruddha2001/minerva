@@ -20,4 +20,8 @@ export const errors = {
     code: 500,
     message: "Unable to sign up new user",
   },
+  USER_SIGNUP_CONFLICT: {
+    code: 409,
+    message: "User already exists",
+  },
 };

@@ -37,6 +37,7 @@
     "postinstall": "npx tsc",
     "start": "node ./build/index.js",
     "dev": "tsc && yarn start",
-    "test": "sudo chmod a+rx ./test.sh && ./test.sh"
+    "test": "sudo chmod a+rx ./test.sh && ./test.sh",
+    "devtest": "tsc && yarn test"
   }
 }
