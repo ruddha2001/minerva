@@ -13,7 +13,6 @@ const AuthContextProvider = (props) => {
     setIsAuth(false);
     localStorage.removeItem("authToken");
     localStorage.removeItem("role");
-    alert("Logged out.");
   };
 
   return (

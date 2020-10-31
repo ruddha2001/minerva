@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import SimpleReactValidator from "simple-react-validator";
 
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import colors from "../assets/colors.json";
@@ -339,126 +339,134 @@ const LoginPage = () => {
   };
 
   return (
-    <LoginContainer>
-      <Login signup={signup}>
-        <div className="logo-mobile">
-          <header>
-            <img className="logo" src={logo} />
-            {/* Minerva */}
-          </header>
-          <div>Lorem ipsum dolor sit amet, consectetur adipiscing el</div>
-        </div>
-        <div className="container">
-          <div className="label name">Name</div>
-          <input
-            type="text"
-            name="name"
-            value={form.name}
-            onChange={handleInputChange}
-            className="name"
-          />
-          {validator.current.message("name", form.name, "required", {
-            className: "text-danger name",
-          })}
+    <>
+      <LoginContainer>
+        <Login signup={signup}>
+          <div className="logo-mobile">
+            <header>
+              <img className="logo" src={logo} />
+              {/* Minerva */}
+            </header>
+            <div>Lorem ipsum dolor sit amet, consectetur adipiscing el</div>
+          </div>
+          <div className="container">
+            <div className="label name">Name</div>
+            <input
+              type="text"
+              name="name"
+              value={form.name}
+              onChange={handleInputChange}
+              className="name"
+            />
+            {validator.current.message("name", form.name, "required", {
+              className: "text-danger name",
+            })}
 
-          <div className="label">Email</div>
-          <input
-            type="email"
-            name="email"
-            value={form.email}
-            onChange={handleInputChange}
-          />
-          {validator.current.message("email", form.email, "required|email", {
-            className: "text-danger",
-          })}
-
-          <div className="label name">Mobile</div>
-          <input
-            type="tel"
-            name="mobile"
-            value={form.mobile}
-            onChange={handleInputChange}
-            className="name"
-          />
-          {validator.current.message("mobile", form.mobile, "required|min:10", {
-            className: "text-danger name",
-          })}
-
-          <div className="label">Password</div>
-          <input
-            type="password"
-            name="password"
-            value={form.password}
-            onChange={handleInputChange}
-            onKeyDown={handleKeyDown}
-          />
-          {validator.current.message(
-            "password",
-            form.password,
-            "required|min:6",
-            {
+            <div className="label">Email</div>
+            <input
+              type="email"
+              name="email"
+              value={form.email}
+              onChange={handleInputChange}
+            />
+            {validator.current.message("email", form.email, "required|email", {
               className: "text-danger",
-            }
-          )}
+            })}
 
-          <div className="label">Role</div>
-          <div className="radio">
+            <div className="label name">Mobile</div>
             <input
-              type="radio"
-              id="student"
-              name="role"
-              value="student"
-              checked={role === "student"}
-              onChange={handleRoleChange}
+              type="tel"
+              name="mobile"
+              value={form.mobile}
+              onChange={handleInputChange}
+              className="name"
             />
-            <div className="label">Student</div>
-          </div>
-          <div className="radio">
-            <input
-              type="radio"
-              id="teacher"
-              name="role"
-              value="teacher"
-              checked={role === "teacher"}
-              onChange={handleRoleChange}
-            />
-            <div className="label">Teacher</div>
-          </div>
+            {validator.current.message(
+              "mobile",
+              form.mobile,
+              "required|min:10",
+              {
+                className: "text-danger name",
+              }
+            )}
 
-          <button
-            className="button"
-            onClick={handleSubmit}
-            disabled={processing}
-          >
-            {processing ? "Please wait..." : signup ? "Sign Up" : "Login"}
-          </button>
-          {message && <div className="message">{message}</div>}
-        </div>
-        <div className="signup-message">
-          {signup ? "Already have an account? " : "Don't have an account yet? "}
-          <span
-            onClick={() => {
-              setSignup(!signup);
-              setForm({ ...form, name: "", mobile: "" });
-            }}
-          >
-            {signup ? "Login" : "Sign Up"}
-          </span>
-        </div>
-      </Login>
-      <Landing>
-        <div></div>
-        <Note>
-          <div className="title">Minerva</div>
-          <img className="logo" src={logo} />
-          <div className="note">
-            Lorem ipsum dolor sit amet, consectetur adipiscing el
+            <div className="label">Password</div>
+            <input
+              type="password"
+              name="password"
+              value={form.password}
+              onChange={handleInputChange}
+              onKeyDown={handleKeyDown}
+            />
+            {validator.current.message(
+              "password",
+              form.password,
+              "required|min:6",
+              {
+                className: "text-danger",
+              }
+            )}
+
+            <div className="label">Role</div>
+            <div className="radio">
+              <input
+                type="radio"
+                id="student"
+                name="role"
+                value="student"
+                checked={role === "student"}
+                onChange={handleRoleChange}
+              />
+              <div className="label">Student</div>
+            </div>
+            <div className="radio">
+              <input
+                type="radio"
+                id="teacher"
+                name="role"
+                value="teacher"
+                checked={role === "teacher"}
+                onChange={handleRoleChange}
+              />
+              <div className="label">Teacher</div>
+            </div>
+
+            <button
+              className="button"
+              onClick={handleSubmit}
+              disabled={processing}
+            >
+              {processing ? "Please wait..." : signup ? "Sign Up" : "Login"}
+            </button>
+            {message && <div className="message">{message}</div>}
           </div>
-        </Note>
-        <div></div>
-      </Landing>
-      <ToastContainer />
-    </LoginContainer>
+          <div className="signup-message">
+            {signup
+              ? "Already have an account? "
+              : "Don't have an account yet? "}
+            <span
+              onClick={() => {
+                setSignup(!signup);
+                setForm({ ...form, name: "", mobile: "" });
+              }}
+            >
+              {signup ? "Login" : "Sign Up"}
+            </span>
+          </div>
+        </Login>
+        <Landing>
+          <div></div>
+          <Note>
+            <div className="title">Minerva</div>
+            <img className="logo" src={logo} />
+            <div className="note">
+              Lorem ipsum dolor sit amet, consectetur adipiscing el
+            </div>
+          </Note>
+          <div></div>
+        </Landing>
+      </LoginContainer>
+    </>
   );
 };
 
