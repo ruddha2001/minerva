@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { Request, Response, Router } from "express";
 import { validateRequest } from "../shared/middlewares/inputDataValidation";
 import { authGuard } from "../shared/middlewares/authValidation";
-import { addQuestion, updateQuestion } from "./controller";
+import { addQuestion, fetchQuestion, updateQuestion } from "./controller";
 
 let router = Router();
 
@@ -16,13 +16,28 @@ const questionSchema = yup.object({
   tags: yup.array().notRequired(),
 });
 
+const questionUpdateSchema = yup.object({
+  question_id: yup.string().required().trim(),
+  property: yup.string().required().trim(),
+  value: yup.mixed().required(),
+});
+
 export const questionRegisterHandler = () => {
   router.post(
-    "/add",
+    "/",
     authGuard,
     validateRequest("body", questionSchema),
     addQuestionHandler
   );
+
+  router.put(
+    "/",
+    authGuard,
+    validateRequest("body", questionUpdateSchema),
+    updateQuestionHandler
+  );
+
+  router.get("/", authGuard, fetchQuestionHandler);
   return router;
 };
 
@@ -38,6 +53,19 @@ export const addQuestionHandler = async (req: Request, res: Response) => {
 
 export const updateQuestionHandler = async (req: Request, res: Response) => {
   updateQuestion(req.body.property, req.body.value, req.body.question_id)
+    .then((success) => {
+      res.json(success);
+    })
+    .catch((error) => {
+      res.status(error.code).json({ success: false, message: error.message });
+    });
+};
+
+export const fetchQuestionHandler = async (req: Request, res: Response) => {
+  fetchQuestion(
+    res.locals.user,
+    req.query.class ? <string>req.query.class : null
+  )
     .then((success) => {
       res.json(success);
     })

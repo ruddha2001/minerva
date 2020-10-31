@@ -40,7 +40,7 @@ export const userLogin = async (
     return {
       success: true,
       token: await signJwt({
-        user_number: result.user_number,
+        email: result.email,
         role: result.role,
       }),
     };

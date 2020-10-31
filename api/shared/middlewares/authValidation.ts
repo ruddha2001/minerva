@@ -12,7 +12,8 @@ export const authGuard = async (
     let payload: any = await verifyJwt(token);
     res.locals.user = await DatabaseService.getMongoDatabase()
       .collection(payload.role!)
-      .findOne({ user_name: payload.user_name });
+      .findOne({ email: payload.email });
+    if (res.locals.user === null) throw Error("Cannot find user");
     next();
   } catch (error) {
     return res.status(400).json({ error: error.message });
