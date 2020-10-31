@@ -1,5 +1,6 @@
 import * as yup from "yup";
 import { NextFunction, Response, Request } from "express";
+import { logger } from "../../constants";
 
 type RequestLocation = "query" | "body" | "params";
 
@@ -25,6 +26,7 @@ export const validateRequest = (
       next();
     } catch (error) {
       const message = error.errors[0];
+      logger.error(message);
       return res.status(400).json({ error: message });
     }
   };

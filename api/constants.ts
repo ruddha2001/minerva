@@ -8,6 +8,8 @@ export const routeVariables = {
   API_VERSION: "/api/v1",
   ENDPOINTS: {
     HEALTHCHECK: "/status",
+    USER: "/user",
+    QUESTION: "/question",
   },
 };
 
@@ -27,5 +29,13 @@ export const errors = {
   USER_LOGIN_INVALID: {
     code: 400,
     message: "Inavlid user credentials",
+  },
+  QUESTION_ADD_ERROR: {
+    code: 500,
+    message: "Could not add question",
+  },
+  QUESTION_UPDATE_ERROR: {
+    code: 500,
+    message: "Could not update question",
   },
 };
