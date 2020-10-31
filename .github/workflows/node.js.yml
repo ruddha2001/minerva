@@ -18,6 +18,8 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x, 12.x, 14.x]
+        mongodb-version: [4.2]
+
 
     steps:
     - uses: actions/checkout@v2
@@ -25,5 +27,13 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: yarn
+    
+    - name: Start MongoDB v${{ matrix.mongodb-version }}
+      uses: supercharge/mongodb-github-action@1.2.0
+      with:
+        mongodb-version: ${{ matrix.mongodb-version }}
+        
+    - run: yarn install
     - run: yarn test
+      env:
+        MONGODB_URI: mongodb://localhost:27017/
