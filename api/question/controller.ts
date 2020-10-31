@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { errors, logger } from "../constants";
 import { DatabaseService } from "../shared/services/databaseService";
@@ -41,5 +42,26 @@ export const addQuestion = async (user: any, data: any) => {
   } catch (error) {
     logger.error(error);
     throw errors.QUESTION_ADD_ERROR;
+  }
+};
+
+export const updateQuestion = async (
+  property: string,
+  value: any,
+  question_id: string
+) => {
+  try {
+    let setMap = new Map<string, any>();
+    setMap.set(property, value);
+    await DatabaseService.getMongoDatabase()
+      .collection("question")
+      .updateOne(
+        { question_id: question_id },
+        { $set: Object.fromEntries(setMap) }
+      );
+    return { success: true, message: "Question updated successfully" };
+  } catch (error) {
+    logger.error(error);
+    throw errors.QUESTION_UPDATE_ERROR;
   }
 };

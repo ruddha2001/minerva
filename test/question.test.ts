@@ -1,6 +1,6 @@
 require("dotenv").config();
 import chai from "chai";
-import { addQuestion } from "../api/question/controller";
+import { addQuestion, updateQuestion } from "../api/question/controller";
 import { DatabaseService } from "../api/shared/services/databaseService";
 import { userLogin, userSignup } from "../api/user/controller";
 
@@ -47,6 +47,19 @@ export const questionTestCases = () => {
           unit_name: "useless",
           unit_number: "5",
         }
+      );
+
+      expect(response.success).to.be.true;
+    });
+
+    it("Question updation", async () => {
+      let data = await DatabaseService.getMongoDatabase()
+        .collection("question")
+        .findOne({ title: "Test - What is life?" });
+      let response = await updateQuestion(
+        "body",
+        "New Random Body",
+        data.question_id
       );
 
       expect(response.success).to.be.true;

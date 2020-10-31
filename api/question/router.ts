@@ -2,7 +2,7 @@ import * as yup from "yup";
 import { Request, Response, Router } from "express";
 import { validateRequest } from "../shared/middlewares/inputDataValidation";
 import { authGuard } from "../shared/middlewares/authValidation";
-import { addQuestion } from "./controller";
+import { addQuestion, updateQuestion } from "./controller";
 
 let router = Router();
 
@@ -28,6 +28,16 @@ export const questionRegisterHandler = () => {
 
 export const addQuestionHandler = async (req: Request, res: Response) => {
   addQuestion(res.locals.user, req.body)
+    .then((success) => {
+      res.json(success);
+    })
+    .catch((error) => {
+      res.status(error.code).json({ success: false, message: error.message });
+    });
+};
+
+export const updateQuestionHandler = async (req: Request, res: Response) => {
+  updateQuestion(req.body.property, req.body.value, req.body.question_id)
     .then((success) => {
       res.json(success);
     })

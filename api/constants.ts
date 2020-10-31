@@ -34,4 +34,8 @@ export const errors = {
     code: 500,
     message: "Could not add question",
   },
+  QUESTION_UPDATE_ERROR: {
+    code: 500,
+    message: "Could not update question",
+  },
 };
