@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import SimpleReactValidator from "simple-react-validator";
@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import colors from "../assets/colors.json";
 import logo from "../assets/minerva.svg";
+
+import { AuthContext } from "../context/AuthContext";
 
 const LoginContainer = styled.div`
   height: 100vh;
@@ -238,76 +240,70 @@ const Note = styled.div`
   }
 `;
 
-export default class LoginPage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      signup: false,
-      processing: false,
-      name: "",
-      email: "",
-      mobile: "",
-      password: "",
-      role: "student",
-      message: "",
-    };
+const LoginPage = () => {
+  const [signup, setSignup] = useState(false);
+  const [processing, setProcessing] = useState(false);
+  const [message, setMessage] = useState("");
+  const [role, setRole] = useState("student");
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.handleRoleChange = this.handleRoleChange.bind(this);
-    this.validator = new SimpleReactValidator();
-  }
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    mobile: "",
+    password: "",
+  });
 
-  handleInputChange(event) {
-    const target = event.target;
+  const authContext = useContext(AuthContext);
+
+  const validator = useRef(new SimpleReactValidator());
+  const [, forceUpdate] = useState();
+
+  const handleInputChange = (evt) => {
+    const target = evt.target;
     const value = target.value;
     const name = target.name;
 
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleRoleChange = (evt) => {
-    evt.stopPropagation();
-    this.setState({
-      role: evt.target.value,
+    setForm((form) => {
+      return { ...form, [name]: value };
     });
   };
 
-  handleKeyDown(event) {
-    if (event.key === "Enter") {
-      this.handleSubmit();
+  const handleRoleChange = (evt) => {
+    evt.stopPropagation();
+    setRole(evt.target.value);
+  };
+
+  const handleKeyDown = (evt) => {
+    if (evt.key === "Enter") {
+      handleSubmit();
     }
-  }
+  };
 
-  handleSubmit() {
+  const handleSubmit = () => {
     // ? TO BE CHANGED
-    this.setState({ message: "" });
+    setMessage("");
     if (
-      this.validator.fieldValid("email") &&
-      this.validator.fieldValid("password") &&
-      (!this.state.signup || this.validator.fieldValid("name")) &&
-      (!this.state.signup || this.validator.fieldValid("mobile"))
+      validator.current.fieldValid("email") &&
+      validator.current.fieldValid("password") &&
+      (!signup || validator.current.fieldValid("name")) &&
+      (!signup || validator.current.fieldValid("mobile"))
     ) {
-      this.setState({ processing: true });
+      setProcessing(true);
 
-      const endpoint =
-        "/api/v1/user/" + (this.state.signup ? "signup" : "login");
+      const endpoint = "/api/v1/user/" + (signup ? "signup" : "login");
 
       axios
         .post(endpoint, {
-          name: this.state.name,
-          email: this.state.email,
-          mobile: this.state.mobile,
-          password: this.state.password,
-          role: this.state.role,
+          name: form.name,
+          email: form.email,
+          mobile: form.mobile,
+          password: form.password,
+          role: role,
         })
         .then((response) => {
           console.log(response);
           if (response.data.success) {
-            if (this.state.signup) {
+            if (signup) {
               toast.success("🚀 Registered successfully!", {
                 position: "top-right",
                 autoClose: 5000,
@@ -316,7 +312,7 @@ export default class LoginPage extends React.Component {
                 pauseOnHover: true,
                 draggable: true,
               });
-              this.setState({ processing: false });
+              setProcessing(false);
             } else {
               localStorage.setItem(
                 "authToken",
@@ -326,160 +322,144 @@ export default class LoginPage extends React.Component {
                 "role",
                 JSON.stringify(JSON.parse(response.config.data).role)
               );
+              authContext.setIsAuth(true);
             }
           }
         })
         .catch((error) => {
-          this.setState({ message: error.response.data.message });
-          this.setState({ processing: false });
+          setMessage(error.response.data.message);
+          setProcessing(false);
         });
     } else {
-      this.validator.showMessages();
+      validator.current.showMessages();
       // rerender to show messages for the first time
       // you can use the autoForceUpdate option to do this automatically`
-      this.forceUpdate();
+      forceUpdate(1);
     }
-  }
+  };
 
-  render() {
-    return (
-      <LoginContainer>
-        <Login signup={this.state.signup}>
-          <div className="logo-mobile">
-            <header>
-              <img className="logo" src={logo} />
-              {/* Minerva */}
-            </header>
-            <div>Lorem ipsum dolor sit amet, consectetur adipiscing el</div>
-          </div>
-          <div className="container">
-            <div className="label name">Name</div>
-            <input
-              type="text"
-              name="name"
-              value={this.state.name}
-              onChange={this.handleInputChange}
-              className="name"
-            />
-            {this.validator.message("name", this.state.name, "required", {
-              className: "text-danger name",
-            })}
-
-            <div className="label">Email</div>
-            <input
-              type="email"
-              name="email"
-              value={this.state.email}
-              onChange={this.handleInputChange}
-            />
-            {this.validator.message(
-              "email",
-              this.state.email,
-              "required|email",
-              { className: "text-danger" }
-            )}
-
-            <div className="label name">Mobile</div>
-            <input
-              type="tel"
-              name="mobile"
-              value={this.state.mobile}
-              onChange={this.handleInputChange}
-              className="name"
-            />
-            {this.validator.message(
-              "mobile",
-              this.state.mobile,
-              "required|min:10",
-              {
-                className: "text-danger name",
-              }
-            )}
-
-            <div className="label">Password</div>
-            <input
-              type="password"
-              name="password"
-              value={this.state.password}
-              onChange={this.handleInputChange}
-              onKeyDown={this.handleKeyDown}
-            />
-            {this.validator.message(
-              "password",
-              this.state.password,
-              "required|min:6",
-              { className: "text-danger" }
-            )}
-
-            <div className="label">Role</div>
-            <div className="radio">
-              <input
-                type="radio"
-                id="student"
-                name="role"
-                value="student"
-                checked={this.state.role === "student"}
-                onChange={this.handleRoleChange}
-              />
-              <div className="label">Student</div>
-            </div>
-            <div className="radio">
-              <input
-                type="radio"
-                id="teacher"
-                name="role"
-                value="teacher"
-                checked={this.state.role === "teacher"}
-                onChange={this.handleRoleChange}
-              />
-              <div className="label">Teacher</div>
-            </div>
-
-            <button
-              className="button"
-              onClick={this.handleSubmit}
-              disabled={this.state.processing}
-            >
-              {this.state.processing
-                ? "Please wait..."
-                : this.state.signup
-                ? "Sign Up"
-                : "Login"}
-            </button>
-            {this.state.message && (
-              <div className="message">{this.state.message}</div>
-            )}
-          </div>
-          <div className="signup-message">
-            {this.state.signup
-              ? "Already have an account? "
-              : "Don't have an account yet? "}
-            <span
-              onClick={() =>
-                this.setState({
-                  signup: !this.state.signup,
-                  name: "",
-                  mobile: "",
-                })
-              }
-            >
-              {this.state.signup ? "Login" : "Sign Up"}
-            </span>
-          </div>
-        </Login>
-        <Landing>
-          <div></div>
-          <Note>
-            <div className="title">Minerva</div>
+  return (
+    <LoginContainer>
+      <Login signup={signup}>
+        <div className="logo-mobile">
+          <header>
             <img className="logo" src={logo} />
-            <div className="note">
-              Lorem ipsum dolor sit amet, consectetur adipiscing el
-            </div>
-          </Note>
-          <div></div>
-        </Landing>
-        <ToastContainer />
-      </LoginContainer>
-    );
-  }
-}
+            {/* Minerva */}
+          </header>
+          <div>Lorem ipsum dolor sit amet, consectetur adipiscing el</div>
+        </div>
+        <div className="container">
+          <div className="label name">Name</div>
+          <input
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleInputChange}
+            className="name"
+          />
+          {validator.current.message("name", form.name, "required", {
+            className: "text-danger name",
+          })}
+
+          <div className="label">Email</div>
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={handleInputChange}
+          />
+          {validator.current.message("email", form.email, "required|email", {
+            className: "text-danger",
+          })}
+
+          <div className="label name">Mobile</div>
+          <input
+            type="tel"
+            name="mobile"
+            value={form.mobile}
+            onChange={handleInputChange}
+            className="name"
+          />
+          {validator.current.message("mobile", form.mobile, "required|min:10", {
+            className: "text-danger name",
+          })}
+
+          <div className="label">Password</div>
+          <input
+            type="password"
+            name="password"
+            value={form.password}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+          />
+          {validator.current.message(
+            "password",
+            form.password,
+            "required|min:6",
+            {
+              className: "text-danger",
+            }
+          )}
+
+          <div className="label">Role</div>
+          <div className="radio">
+            <input
+              type="radio"
+              id="student"
+              name="role"
+              value="student"
+              checked={role === "student"}
+              onChange={handleRoleChange}
+            />
+            <div className="label">Student</div>
+          </div>
+          <div className="radio">
+            <input
+              type="radio"
+              id="teacher"
+              name="role"
+              value="teacher"
+              checked={role === "teacher"}
+              onChange={handleRoleChange}
+            />
+            <div className="label">Teacher</div>
+          </div>
+
+          <button
+            className="button"
+            onClick={handleSubmit}
+            disabled={processing}
+          >
+            {processing ? "Please wait..." : signup ? "Sign Up" : "Login"}
+          </button>
+          {message && <div className="message">{message}</div>}
+        </div>
+        <div className="signup-message">
+          {signup ? "Already have an account? " : "Don't have an account yet? "}
+          <span
+            onClick={() => {
+              setSignup(!signup);
+              setForm({ ...form, name: "", mobile: "" });
+            }}
+          >
+            {signup ? "Login" : "Sign Up"}
+          </span>
+        </div>
+      </Login>
+      <Landing>
+        <div></div>
+        <Note>
+          <div className="title">Minerva</div>
+          <img className="logo" src={logo} />
+          <div className="note">
+            Lorem ipsum dolor sit amet, consectetur adipiscing el
+          </div>
+        </Note>
+        <div></div>
+      </Landing>
+      <ToastContainer />
+    </LoginContainer>
+  );
+};
+
+export default LoginPage;
