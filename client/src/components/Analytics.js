@@ -95,12 +95,18 @@ function Analytics(props) {
     <Graph>
       <div>Upvotes</div>
       {Object.keys(upvotes).map((keyName, i) => (
-        <div>{keyName + " : " + upvotes[keyName]}</div>
+        <div>
+          <a href={`#${keyName}`}>{keyName}</a>
+          {" : " + upvotes[keyName]}
+        </div>
       ))}
       <br />
       <div>Downvotes</div>
       {Object.keys(downvotes).map((keyName, i) => (
-        <div>{keyName + " : " + downvotes[keyName]}</div>
+        <div>
+          <a href={`#${keyName}`}>{keyName}</a>
+          {" : " + downvotes[keyName]}
+        </div>
       ))}
       <br />
       <div>No of questions per unit</div>

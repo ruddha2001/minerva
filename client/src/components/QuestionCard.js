@@ -194,7 +194,7 @@ function QuestionCard(props) {
   };
 
   return (
-    <Card>
+    <Card id={question.question_id}>
       <section>
         <div className="main">
           <div className="title">{question.title}</div>
