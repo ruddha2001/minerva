@@ -3,7 +3,6 @@ import { Request, Response, Router } from "express";
 import { validateRequest } from "../shared/middlewares/inputDataValidation";
 import { authGuard } from "../shared/middlewares/authValidation";
 import { addComment } from "./controller";
-import { logger } from "../constants";
 
 let router = Router();
 
@@ -27,7 +26,12 @@ export const commentRegisterHandler = () => {
 };
 
 export const addCommentHandler = async (req: Request, res: Response) => {
-  addComment(req.query.id as string, req.body, res.locals.user)
+  addComment(
+    req.query.id as string,
+    req.query.choice ? (req.query.choice as string) : null,
+    req.body,
+    res.locals.user
+  )
     .then((success) => {
       res.json(success);
     })

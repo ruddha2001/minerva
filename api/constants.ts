@@ -12,6 +12,7 @@ export const routeVariables = {
     QUESTION: "/question",
     ANALYTICS: "/analytic",
     COMMENT: "/comment",
+    CLASS: "/class",
   },
 };
 
@@ -47,5 +48,9 @@ export const errors = {
   COMMENT_ADD_ERROR: {
     code: 500,
     message: "Could not add comment",
+  },
+  CLASS_ERROR: {
+    code: 500,
+    message: "Issue during class creation/addition",
   },
 };
