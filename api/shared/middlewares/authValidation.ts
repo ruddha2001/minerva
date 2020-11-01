@@ -1,4 +1,5 @@
 import { NextFunction, Response, Request } from "express";
+import { logger } from "../../constants";
 import { DatabaseService } from "../services/databaseService";
 import { verifyJwt } from "../services/jwtService";
 
@@ -16,6 +17,7 @@ export const authGuard = async (
     if (res.locals.user === null) throw Error("Cannot find user");
     next();
   } catch (error) {
+    logger.info(error);
     return res.status(400).json({ error: error.message });
   }
 };

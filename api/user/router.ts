@@ -2,6 +2,7 @@ import * as yup from "yup";
 import { Request, Response, Router } from "express";
 import { validateRequest } from "../shared/middlewares/inputDataValidation";
 import { userLogin, userSignup } from "./controller";
+import { authGuard } from "../shared/middlewares/authValidation";
 
 let router = Router();
 
@@ -38,6 +39,8 @@ export const userRegisterHandler = () => {
     userLoginHandler
   );
 
+  router.get("/", authGuard, userDetailHandler);
+
   return router;
 };
 
@@ -60,4 +63,13 @@ const userLoginHandler = (req: Request, res: Response) => {
     .catch((error) => {
       res.status(error.code).json({ success: false, message: error.message });
     });
+};
+
+const userDetailHandler = (req: Request, res: Response) => {
+  res.json({
+    name: res.locals.user.name,
+    email: res.locals.user.email,
+    mobile: res.locals.user.mobile,
+    role: res.locals.user.role,
+  });
 };
