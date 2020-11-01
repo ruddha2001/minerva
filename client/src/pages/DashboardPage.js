@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import profilePic from "../assets/profile.png";
 import { AuthContext } from "../context/AuthContext";
 import colors from "../assets/colors.json";
 import { toast } from "react-toastify";
+import axios from "axios";
+
+import Analytics from "../components/Analytics";
+import Questions from "../components/Questions";
 
 const Dashboard = styled.div`
   display: grid;
@@ -50,18 +54,47 @@ const Dashboard = styled.div`
 
 function DashboardPage() {
   const authContext = useContext(AuthContext);
-  const authToken = localStorage.getItem("authToken");
-  if (authToken && !authContext.isAuth) {
-    authContext.setIsAuth(true);
-  }
+  const [details, setDetails] = useState({});
+
+  useEffect(() => {
+    const endpoint = "/api/v1/user/";
+    const authToken = JSON.parse(localStorage.getItem("authToken"));
+    console.log(authToken);
+
+    axios
+      .get(endpoint, { headers: { "x-auth-token": authToken } })
+      .then((response) => {
+        response.data.role =
+          response.data.role[0].toUpperCase() + response.data.role.slice(1);
+        setDetails(response.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response);
+          if (error.response.status === 400) {
+            authContext.logoutHandler();
+
+            toast.error(error.response.data.error, {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+          }
+        }
+      });
+  }, []);
+
   return (
     <Dashboard>
       <div className="sidebar">
         <img className="image" src={profilePic} />
-        <div className="detail">{"Snehil"}</div>
-        <div className="detail">{"student"}</div>
-        <div className="detail">{"snehil3@gmail.com"}</div>
-        <div className="detail">{"+91 7903386743"}</div>
+        <div className="detail">{details.name || "-"}</div>
+        <div className="detail">{details.role || "-"}</div>
+        <div className="detail">{details.email || "-"}</div>
+        <div className="detail">{details.mobile || "-"}</div>
 
         <div
           className="button"
