@@ -1,15 +1,18 @@
-import { exec as execution } from "child_process";
+import { spawnSync } from "child_process";
 import * as path from "path";
-import { promisify } from "util";
-
-const exec = promisify(execution);
+import { logger } from "../../constants";
 
 export const getAnalytics = async (ch: string, classCode: string) => {
-  try {
-    const { stdout, stderr } = await exec(
-      `python tag.py --file ${path.join(__dirname, classCode)}.csv --op ${ch}`
-    );
-    console.log("stdout:", stdout);
-    console.log("stderr:", stderr);
-  } catch (error) {}
+  const analytic = spawnSync("python3", [
+    `${path.join(__dirname, "tag.py")}`,
+    "-file",
+    `${path.join(__dirname, classCode)}.csv`,
+    "-op",
+    `${ch}`,
+  ]);
+  if (analytic.error) {
+    logger.error(analytic.error);
+    logger.info(analytic.stderr);
+  }
+  return analytic.stdout;
 };
