@@ -11,6 +11,7 @@ export const routeVariables = {
     USER: "/user",
     QUESTION: "/question",
     ANALYTICS: "/analytic",
+    COMMENT: "/comment",
   },
 };
 
@@ -42,5 +43,9 @@ export const errors = {
   ANALYTIC_ERROR: {
     code: 500,
     message: "Cannot run analytics",
+  },
+  COMMENT_ADD_ERROR: {
+    code: 500,
+    message: "Could not add comment",
   },
 };

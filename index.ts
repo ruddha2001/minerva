@@ -9,6 +9,7 @@ import { healthcheckRegisterHandler } from "./api/healthcheck/router";
 import { userRegisterHandler } from "./api/user/router";
 import { questionRegisterHandler } from "./api/question/router";
 import { analyticRegisterHandler } from "./api/analytics/router";
+import { commentRegisterHandler } from "./api/comment/router";
 
 const app = express();
 
@@ -32,6 +33,10 @@ app.use(
 app.use(
   `${routeVariables.API_VERSION}${routeVariables.ENDPOINTS.ANALYTICS}`,
   analyticRegisterHandler()
+);
+app.use(
+  `${routeVariables.API_VERSION}${routeVariables.ENDPOINTS.COMMENT}`,
+  commentRegisterHandler()
 );
 
 logger.info("Connecting to MongoDB...");
