@@ -59,7 +59,6 @@ function DashboardPage() {
   useEffect(() => {
     const endpoint = "/api/v1/user/";
     const authToken = JSON.parse(localStorage.getItem("authToken"));
-    console.log(authToken);
 
     axios
       .get(endpoint, { headers: { "x-auth-token": authToken } })
@@ -114,8 +113,8 @@ function DashboardPage() {
         </div>
       </div>
       <div className="container">
-        {localStorage.getItem("role") === "teacher" && (
-          <Analytics analytics={{}} />
+        {JSON.parse(localStorage.getItem("role")) === "teacher" && (
+          <Analytics />
         )}
         <Questions questions={[]} />
       </div>
