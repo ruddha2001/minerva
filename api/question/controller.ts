@@ -60,6 +60,18 @@ export const updateQuestion = async (
         { question_id: question_id },
         { $set: Object.fromEntries(setMap) }
       );
+    let question = await DatabaseService.getMongoDatabase()
+      .collection("question")
+      .findOne({ question_id: question_id });
+    let csvFormattedData = {
+      question_id: question.question_id,
+      class_code: question.class_code,
+      unit_number: question.details.unit_number,
+      downvotes: question.downvotes,
+      upvotes: question.upvotes,
+      answered: question.answered,
+    };
+    jsonToCsv(csvFormattedData, question.class_code);
     return { success: true, message: "Question updated successfully" };
   } catch (error) {
     logger.error(error);

@@ -25,19 +25,18 @@ export type Question = {
     sub_topic: string;
   };
   tags: string[];
-  comments: {
-    comment_id: string;
-    asked_by: User;
-    body: string;
-    upvotes: number;
-    downvotes: number;
-    answered: boolean;
-    teacher_choice: boolean;
-    timestamp: Date;
-  }[];
+  comments: Comment[];
   upvotes: number;
   downvotes: number;
   answered: boolean;
+  teacher_choice: boolean;
+  timestamp: number;
+};
+
+export type Comment = {
+  comment_id: string;
+  asked_by: User;
+  body: string;
   teacher_choice: boolean;
   timestamp: number;
 };
