@@ -5,14 +5,16 @@ import { Comment, User } from "../shared/types/CustomTypes";
 
 export const addComment = async (
   question_id: string,
+  choice: string | null,
   data: any,
   user: User
 ) => {
+  console.log(data.choice);
   let comment: Comment = {
     comment_id: nanoid(10),
     asked_by: user,
     body: data.body,
-    teacher_choice: data.choice ? data.choice : false,
+    teacher_choice: choice ? <boolean>(<unknown>choice) : false,
     timestamp: Date.now(),
   };
   try {
